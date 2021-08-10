@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-app-deployment
+  labels:
+    app: demo-voting-app
+    name: worker-app-deployment
+spec:
+  replicas: 1
+  template:
+    metadata: # copy metadata section from worker-app-pod.yml
+      name: worker-app-pod
+      labels:
+        name: worker-app-pod
+        app: demo-voting-app
+    spec:
+      containers:
+        - name: voting-app
+          image: kodekloud/examplevotingapp_worker:v1
+          ports:
+            - containerPort: 80 # application is running on this port inside container
+  selector:
+    matchLabels:
+      name: worker-app-pod
+      app: demo-voting-app

@@ -1,0 +1,26 @@
+# NOTE: pods.yml are not required if deployment.yml exist
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voting-app-deployment
+  labels:
+    app: demo-voting-app
+    name: voting-app-deployment
+spec:
+  replicas: 1
+  template:
+    metadata: # copy metadata section from voting-app-pod.yml
+      name: voting-app-pod
+      labels:
+        name: voting-app-pod
+        app: demo-voting-app
+    spec:
+      containers:
+        - name: voting-app
+          image: kodekloud/examplevotingapp_vote:v1
+          ports:
+            - containerPort: 80 # application is running on this port inside container
+  selector:
+    matchLabels:
+      name: voting-app-pod
+      app: demo-voting-app
