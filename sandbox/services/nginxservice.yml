@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginxservice
+spec:
+  type: NodePort
+  ports:
+    - port: 80 # port on the  service
+      targetPort: 80 # port on the pod
+      nodePort: 30004 # port on vm/node
+  selector:
+    app: nginx  # this is coming from nginxdeployment.yml
+    tier: frontend # this is coming from nginxdeployment.yml
