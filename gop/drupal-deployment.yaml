@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: drupal
+  labels:
+    app: drupal
 spec:
   replicas: 1
   selector:
@@ -17,6 +19,7 @@ spec:
           image: drupal:8.6
           command: [ "/bin/bash", "-c" ]
           args: [ "cp -r /var/www/html/sites/ /data/; chown www-data:www-data /data/ -R" ]
+          #args: [ "cp -r /var/www/html/sites/ /drupal-data/; chown www-data:www-data /drupal-data/ -R" ]
           volumeMounts:
             - mountPath: /data
               name: drupal-data
@@ -25,30 +28,18 @@ spec:
           image: drupal:8.6
           volumeMounts:
             - mountPath: /var/www/html/modules
-              name: modules-data
+              name: drupal-data
               subPath: modules
             - mountPath: /var/www/html/profiles
-              name: profiles-data
+              name: drupal-data
               subPath: profiles
             - mountPath: /var/www/html/sites
-              name: sites-data
+              name: drupal-data
               subPath: sites
             - mountPath: /var/www/html/themes
-              name: themes-data
+              name: drupal-data
               subPath: themes
       volumes:
         - name: drupal-data
-          persistentVolumeClaim:
-            claimName: drupal-pvc
-        - name: modules-data
-          persistentVolumeClaim:
-            claimName: drupal-pvc
-        - name: themes-data
-          persistentVolumeClaim:
-            claimName: drupal-pvc
-        - name: sites-data
-          persistentVolumeClaim:
-            claimName: drupal-pvc
-        - name: profiles-data
           persistentVolumeClaim:
             claimName: drupal-pvc
