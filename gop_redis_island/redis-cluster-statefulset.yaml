@@ -32,7 +32,6 @@ spec:
             - name: conf
               mountPath: /conf
               readOnly: false
-              defaultMode: 0755
             - name: data
               mountPath: /data
               readOnly: false
@@ -40,11 +39,12 @@ spec:
         - name: conf
           configMap:
             name: redis-cluster-configmap
-      volumeClaimTemplates:
-        - metadata:
-            name: data
-          spec:
-          accessModes: [ "ReadWriteOnce" ]
-          resources:
-            requests:
-              storage: 1Gi
+            defaultMode: 0755
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
